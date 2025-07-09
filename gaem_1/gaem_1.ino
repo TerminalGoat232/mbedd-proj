@@ -36,6 +36,7 @@ int last_verify_b_state = HIGH;
 int seq_running = 0;
 int current_instr_length = 0;
 int current_ans_length = 0;
+int pressed_verify_button = 0;
 
 void (*resetBoard)(void) = 0;
 
@@ -80,44 +81,33 @@ void losingSeq(){
       digitalWrite(led_pins[n], LOW);
       delay(100);
     }
+    digitalWrite(SPEAKER_PIN, LOW);
 }
 
 void checkIfLosing() {
 
   if (memcmp(led_instr, answering, sizeof(answering))) {
-        loseSeq();
+        losingSeq();
         // just in case
         memset(answering, 0, sizeof(answering));
         memset(led_instr, 0, sizeof(led_instr));
+        pressed_verify_button = 0;
         current_instr_length = 0;
         current_ans_length = 0;
         resetBoard();
+        
   }
   current_ans_length = 0;
   memset(answering, 0, sizeof(answering));
 }
 
 void loop(){
-  // registering
-  for (int button = 0; button < LED_N_REG_NUM; button++) {
-    b_states[button] = digitalRead(reg_pins[button]);
-    if ( b_states[button] == LOW && last_b_states[button] == HIGH ) {
-      answering[current_ans_length] = led_pins[button]; 
-      ++current_ans_length;
-      digitalWrite(led_pins[button], HIGH);
-      digitalWrite(SPEAKER_PIN, HIGH);
-      delay(delayness);
-      if (current_ans_length == current_instr_length) checkIfLosing();
-    }
-    
-    digitalWrite(led_pins[button], LOW);
-    digitalWrite(SPEAKER_PIN, LOW);
-    last_b_states[button] = b_states[button];
-  }
 
   // verifying stage
   verify_b_state = digitalRead(VERIFY_BUTTON);
+  
   if ( verify_b_state == LOW && last_verify_b_state == HIGH ) {
+    pressed_verify_button = 1;
     led_instr[current_instr_length] = led_pins[random(4)];
     ++current_instr_length; 
     if (!seq_running) {
@@ -125,4 +115,23 @@ void loop(){
     }
   }
   last_verify_b_state = verify_b_state;
+
+  // registering
+  if (pressed_verify_button) {
+    for (int button = 0; button < LED_N_REG_NUM; button++) {
+      b_states[button] = digitalRead(reg_pins[button]);
+      if ( b_states[button] == LOW && last_b_states[button] == HIGH) {
+        answering[current_ans_length] = led_pins[button]; 
+        ++current_ans_length;
+        digitalWrite(led_pins[button], HIGH);
+        digitalWrite(SPEAKER_PIN, HIGH);
+        delay(delayness);
+        if (current_ans_length == current_instr_length) checkIfLosing();
+      }
+      
+      digitalWrite(led_pins[button], LOW);
+      digitalWrite(SPEAKER_PIN, LOW);
+      last_b_states[button] = b_states[button];
+    }
+  }
 }
