@@ -98,6 +98,7 @@ void checkIfLosing() {
         
   }
   current_ans_length = 0;
+  pressed_verify_button--;
   memset(answering, 0, sizeof(answering));
 }
 
@@ -107,14 +108,16 @@ void loop(){
   verify_b_state = digitalRead(VERIFY_BUTTON);
   
   if ( verify_b_state == LOW && last_verify_b_state == HIGH ) {
-    pressed_verify_button = 1;
+    ++pressed_verify_button;
     led_instr[current_instr_length] = led_pins[random(4)];
     ++current_instr_length; 
+    if (pressed_verify_button > 1) checkIfLosing();
     if (!seq_running) {
       initLedSeq(led_instr, current_instr_length);
     }
   }
   last_verify_b_state = verify_b_state;
+  
 
   // registering
   if (pressed_verify_button) {
@@ -123,12 +126,14 @@ void loop(){
       if ( b_states[button] == LOW && last_b_states[button] == HIGH) {
         answering[current_ans_length] = led_pins[button]; 
         ++current_ans_length;
+
         digitalWrite(led_pins[button], HIGH);
         digitalWrite(SPEAKER_PIN, HIGH);
         delay(delayness);
+
         if (current_ans_length == current_instr_length) checkIfLosing();
+
       }
-      
       digitalWrite(led_pins[button], LOW);
       digitalWrite(SPEAKER_PIN, LOW);
       last_b_states[button] = b_states[button];
