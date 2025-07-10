@@ -85,7 +85,7 @@ void losingSeq(){
 }
 
 void checkIfLosing() {
-
+  current_ans_length = 0;
   if (memcmp(led_instr, answering, sizeof(answering))) {
         losingSeq();
         // just in case
@@ -93,11 +93,9 @@ void checkIfLosing() {
         memset(led_instr, 0, sizeof(led_instr));
         pressed_verify_button = 0;
         current_instr_length = 0;
-        current_ans_length = 0;
-        resetBoard();
         
+        resetBoard();     
   }
-  current_ans_length = 0;
   pressed_verify_button--;
   memset(answering, 0, sizeof(answering));
 }
