@@ -2,7 +2,7 @@
 #include <Esp.h>
 #include <string.h>
 #include <Adafruit_NeoPixel.h>
-#include <math.h>
+
 // LEDs
 #define B_LED_PIN 4
 #define G_LED_PIN 5
@@ -55,9 +55,11 @@ TaskHandle_t Thread1;
 // much safer way to soft-resetting the board instead of 
 // pointer manipulating magic fuckery
 // use this for AVR atmel idk.
-// void resetBoard(){
+
+//void resetBoard(){
 //   asm volatile ("jmp 0");
 // }
+
 void resetBoard(){
   ESP.restart();
 }
@@ -111,14 +113,16 @@ void checkIfLosing() {
   memset(answering, 0, sizeof(answering));
 }
 void idk_sleeping_lamp_ig(void *pvParameters) {
+    uint8_t last_pressed_uwu_rgb_button = HIGH;
     for (;;) {
         uint8_t pressed_uwu_rgb_button = !digitalRead(UWU_RGB_ACTIVA_PIN);
-        uint8_t last_pressed_uwu_rgb_button = HIGH;
+        
         if (pressed_uwu_rgb_button == LOW && last_pressed_uwu_rgb_button == HIGH) {
               for (long H = 0;H <= 5*16<<16;H+=256) {
                 pixels.rainbow(H,1,255,NEOPXL_BRIGHTNESS);
                 pixels.show();
                 delay(20);
+                if (H >= 5*16<<16) H = 0;
               }
           last_pressed_uwu_rgb_button = pressed_uwu_rgb_button;
         }
