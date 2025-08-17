@@ -1,6 +1,5 @@
 #include <Arduino.h> 
 #include <Adafruit_NeoPixel.h> 
-#include <Adafruit_TinyUSB.h> 
 #include <ProcessHID.h>
 
 #define NEOPIXL_PIN 16
