@@ -1,0 +1,6 @@
+{
+  "K_0": "0x81",
+  "K_1": "0x80",
+  "K_2": "0x28",
+  "Ref": "https://github.com/hathach/tinyusb/blob/master/src/class/hid/hid.h"
+}
