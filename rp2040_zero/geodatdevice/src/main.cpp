@@ -2,6 +2,12 @@
 #include <Adafruit_NeoPixel.h> 
 #include <ProcessHID.h>
 
+//////////////////////////////
+///TODO: 
+/// + Programmable keys with JSON
+/// + idk
+///
+//////////////////////////////
 #define NEOPIXL_PIN 16
 #define NEOPIXL_BRIGHTNESS 100
 
@@ -9,7 +15,7 @@
 #define BUTTON_1_PIN 11
 #define BUTTON_2_PIN 12
 
-#define POLLING_INTV 2
+#define POLLING_INTV 1
 
 #ifndef BTT_PIN_QUANTITY
   #define BTT_PIN_QUANTITY 3
@@ -25,7 +31,7 @@ uint8_t button_pins[BTT_PIN_QUANTITY] {
 };
 
 uint8_t const desc_hid_report[] = {
-      TUD_HID_REPORT_DESC_KEYBOARD()
+  TUD_HID_REPORT_DESC_KEYBOARD()
 };
 
 // temporary HID key codes
@@ -37,6 +43,7 @@ uint8_t hid_codes[BTT_PIN_QUANTITY] = {
 
 void setup() {
   Serial.begin(115200);
+
   pinMode(NEOPIXL_PIN, OUTPUT);
   pixl.begin();
   
@@ -53,27 +60,35 @@ void setup() {
     delay(10);
     TinyUSBDevice.attach();
   }
-  
+
   for (uint8_t button: button_pins) pinMode(button, INPUT_PULLDOWN);
 }
 
   
 void reinbau(){
-  for (long H = 0;H <= 5*16<<16;H+=256) {  
+  static unsigned long H = 0;
+    H+=256;
     pixl.rainbow(H,1,255,NEOPIXL_BRIGHTNESS);
     pixl.show();
-    delay(20);
-  }
+    if (H >= 5*16<<16) H=0;
 }
 
-
 void loop(){
-  
- #ifdef TINYUSB_NEED_POLLING_TASK
-    TinyUSBDevice.task()
- #endif
- proc.setGPIO(button_pins);
- proc.setHIDCode(hid_codes);
- proc.setPollInterval(POLLING_INTV);
- proc.run();
+   static unsigned int ms_cnt = 0; 
+   if (millis() - ms_cnt > 20) {
+      reinbau();     
+      ms_cnt = millis();
+    }
+   while (Serial.available() >= BTT_PIN_QUANTITY) {
+      for (uint8_t k = 0; k < BTT_PIN_QUANTITY; k++) {
+        hid_codes[k] = Serial.read();
+      }
+    }
+   #ifdef TINYUSB_NEED_POLLING_TASK
+      TinyUSBDevice.task();
+   #endif
+   proc.setGPIO(button_pins);
+   proc.setHIDCode(hid_codes);
+   proc.setPollInterval(POLLING_INTV);
+   proc.run();
 }
