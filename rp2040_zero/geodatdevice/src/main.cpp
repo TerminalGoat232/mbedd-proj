@@ -1,13 +1,8 @@
 #include <Arduino.h> 
 #include <Adafruit_NeoPixel.h> 
 #include <ProcessHID.h>
+#include <RW_HIDC.h>
 
-//////////////////////////////
-///TODO: 
-/// + Programmable keys with JSON
-/// + idk
-///
-//////////////////////////////
 #define NEOPIXL_PIN 16
 #define NEOPIXL_BRIGHTNESS 100
 
@@ -23,6 +18,7 @@
 
 Adafruit_NeoPixel pixl(1, NEOPIXL_PIN, NEO_GRB + NEO_KHZ800);
 Process_HID proc;
+RW_HIDC read_write_hidc; 
 
 uint8_t button_pins[BTT_PIN_QUANTITY] {
   BUTTON_0_PIN,
@@ -34,7 +30,7 @@ uint8_t const desc_hid_report[] = {
   TUD_HID_REPORT_DESC_KEYBOARD()
 };
 
-// temporary HID key codes
+// default HID codes 
 uint8_t hid_codes[BTT_PIN_QUANTITY] = {
   HID_KEY_W, 
   HID_KEY_ARROW_UP, 
@@ -43,10 +39,10 @@ uint8_t hid_codes[BTT_PIN_QUANTITY] = {
 
 void setup() {
   Serial.begin(115200);
-
-  pinMode(NEOPIXL_PIN, OUTPUT);
-  pixl.begin();
+  LittleFS.begin();
   
+  read_write_hidc.LoadHIDKeys(hid_codes); 
+
   if (!TinyUSBDevice.isInitialized()) TinyUSBDevice.begin(0);
 
   usb_hid.setBootProtocol(HID_ITF_PROTOCOL_KEYBOARD);
@@ -59,21 +55,26 @@ void setup() {
     TinyUSBDevice.detach();
     delay(10);
     TinyUSBDevice.attach();
-  }
+  } 
 
   for (uint8_t button: button_pins) pinMode(button, INPUT_PULLDOWN);
-}
 
+  // yaoi 
+  pinMode(NEOPIXL_PIN, OUTPUT);
+  pixl.begin();
   
+}
+ 
 void reinbau(){
-  static unsigned long H = 0;
+  static uint16_t H = 0;
     H+=256;
     pixl.rainbow(H,1,255,NEOPIXL_BRIGHTNESS);
     pixl.show();
-    if (H >= 5*16<<16) H=0;
+    if (H >= 1<<16) H = 0;
 }
 
 void loop(){
+   bool k_saved = false;
    static unsigned int ms_cnt = 0; 
    if (millis() - ms_cnt > 20) {
       reinbau();     
@@ -81,12 +82,19 @@ void loop(){
     }
    while (Serial.available() >= BTT_PIN_QUANTITY) {
       for (uint8_t k = 0; k < BTT_PIN_QUANTITY; k++) {
-        hid_codes[k] = Serial.read();
+        hid_codes[k] = Serial.read(); 
       }
-    }
+      k_saved = true;
+          }
+   
    #ifdef TINYUSB_NEED_POLLING_TASK
       TinyUSBDevice.task();
    #endif
+  
+   if (k_saved) {
+      read_write_hidc.SaveHIDKeys(hid_codes);
+  }
+   
    proc.setGPIO(button_pins);
    proc.setHIDCode(hid_codes);
    proc.setPollInterval(POLLING_INTV);
