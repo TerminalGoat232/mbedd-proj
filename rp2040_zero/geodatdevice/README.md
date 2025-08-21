@@ -1,6 +1,10 @@
 # GeodatDevice *(what a name)*  
 
 Dead ass simple programmable macropad with 3 buttons and a wheel, schem will be available later. 
+> [!Warning]
+> This crap is still heavily under development. Therefore, operate this with your own risk
+> I won't be reponsible for any sufficient damages imposed on your device
+> that are resulting from the use of this macropad.  
 
 ## Features: 
 - Customizable keys. 
