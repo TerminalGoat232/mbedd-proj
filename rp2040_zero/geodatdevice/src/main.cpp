@@ -74,26 +74,24 @@ void reinbau(){
 }
 
 void loop(){
-   bool k_saved = false;
+
    static unsigned int ms_cnt = 0; 
    if (millis() - ms_cnt > 20) {
       reinbau();     
       ms_cnt = millis();
-    }
+   }
+
    while (Serial.available() >= BTT_PIN_QUANTITY) {
       for (uint8_t k = 0; k < BTT_PIN_QUANTITY; k++) {
         hid_codes[k] = Serial.read(); 
       }
-      k_saved = true;
-          }
+      read_write_hidc.SaveHIDKeys(hid_codes);
+
+    }
    
    #ifdef TINYUSB_NEED_POLLING_TASK
       TinyUSBDevice.task();
    #endif
-  
-   if (k_saved) {
-      read_write_hidc.SaveHIDKeys(hid_codes);
-  }
    
    proc.setGPIO(button_pins);
    proc.setHIDCode(hid_codes);
