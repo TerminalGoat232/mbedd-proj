@@ -15,7 +15,7 @@ Dead ass simple programmable macropad with 3 buttons and a wheel, schem will be 
 ## TODOs: 
 - [x] Basic keys registering. 
 - [x] Configurable key binding via a JSON file. 
-- [x] Write/Load config within FS implemented in the flash (utilizing LittleFS)
+- [x] Write/Load config within FS (utilizing LittleFS)
 - [ ] Better error handling. 
 - [ ] Snappy Tappy support. 
 - [ ] Develop a GUI for better configuration experience (pyQt?). 
