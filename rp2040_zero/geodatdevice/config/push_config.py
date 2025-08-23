@@ -15,7 +15,7 @@ args = parser.parse_args()
 def search_for_port():
     ports = ls_ports.comports()
     for p in ports:
-        if ("RP2040" in p.description) or ("CDC" in p.description) or ("ACM" in p.device):
+        if ("RP2040" in p.description) or ("CDC" in p.description) or ("ACM" in p.device) or ("COM" in p.device):
             return p.device 
     return None 
 port = search_for_port()
@@ -27,7 +27,7 @@ print("Waiting...")
 time.sleep(1)
 
 def desired_config_file():
-    return 'config.json' if (args.config == "") else args.config
+    return 'config.json' if (args.config == None) else args.config
 
 while 1:
     print("ok buddy rp2040")
