@@ -2,7 +2,7 @@
 
 Dead ass simple programmable macropad with 3 buttons and a wheel, schem will be available later. 
 > [!Warning]
-> This crap is still heavily under development. Therefore, operate this with your own risk   
+> This crap is still heavily under development. Therefore, it is suggested to operate this within your own risk   
 > I won't be reponsible for any sufficient damages imposed on your device   
 > that are resulting from the use of this macropad.   
 
