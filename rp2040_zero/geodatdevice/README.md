@@ -1,10 +1,10 @@
 # GeodatDevice *(what a name)*  
 
-Dead ass simple programmable macropad with 3 buttons and a wheel, schem will be available later. 
+Dead ass simple programmable 3 buttons macropad with an .96" LCD, a knob, schem will be available later. 
 > [!Warning]
-> This crap is still heavily under development. Therefore, it is suggested to operate this within your own risk   
+> This crap is still heavily under development. Therefore, it is suggested to operate this within your own risk. 
 > I won't be reponsible for any sufficient damages imposed on your device   
-> that are resulting from the use of this macropad.   
+> which resulted from the use of this macropad. 
 
 ## Features: 
 - Customizable keys. 
@@ -22,5 +22,14 @@ Dead ass simple programmable macropad with 3 buttons and a wheel, schem will be 
 - [ ] Shortcut combinations. 
 - [ ] Single-key text output. 
 - [ ] Auto clicking.
-- [ ] Programmable wheel. 
-- [ ] Assemble the components onto a PCB board. 
+- [ ] Programmable knob. 
+- [x] Assemble the components onto a PCB board. 
+   - [x] Keys 
+   - [x] Knob 
+   - [x] Lil indication LED 
+   - [ ] LCD 
+   - [ ] Configuration buttons 
+- [ ] Key sequence. 
+- [ ] On board flexible config switching using physical buttons. 
+- [ ] Make an acrylic case for the macropad 
+      (*TS will take ages yeah I know cuz idk where to start with*). 
