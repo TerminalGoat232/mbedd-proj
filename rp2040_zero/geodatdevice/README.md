@@ -1,6 +1,6 @@
 # GeodatDevice *(what a name)*  
 
-Dead ass simple programmable 3 buttons macropad with an .96" LCD, a knob, schem will be available later. 
+Dead ass simple programmable 3 buttons macropad with a .96" LCD, a knob, schem will be available later. 
 > [!Warning]
 > This crap is still heavily under development. Therefore, it is suggested to operate this within your own risk. 
 > I won't be reponsible for any sufficient damages imposed on your device   
