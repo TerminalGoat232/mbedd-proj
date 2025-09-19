@@ -3,8 +3,7 @@
 Dead ass simple programmable 3 buttons macropad with a .96" LCD and a knob. Schematic will be available later. 
 > [!Warning]
 > This crap is still heavily under development. Therefore, it is suggested to operate this within your own risk. 
-> I won't be reponsible for any sufficient damages imposed on your device   
-> which resulted from the use of this macropad. 
+> I won't be reponsible for any sufficient damages imposed on your device which resulted from the use of this macropad. 
 
 ## Features: 
 - Customizable keys. 
