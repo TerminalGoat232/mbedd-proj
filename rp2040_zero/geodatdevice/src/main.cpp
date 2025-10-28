@@ -6,9 +6,9 @@
 #define NEOPIXL_PIN 16
 #define NEOPIXL_BRIGHTNESS 100
 
-#define BUTTON_0_PIN 10
+#define BUTTON_0_PIN 12
 #define BUTTON_1_PIN 11
-#define BUTTON_2_PIN 12
+#define BUTTON_2_PIN 10
 
 #define POLLING_INTV 1
 
