@@ -10,9 +10,9 @@ class RW_HIDC {
       if (!f2w) return; 
 
       JsonDocument config_json_w; 
-      config_json_w["K_2"] = hidc_addr_2_save[0];
+      config_json_w["K_0"] = hidc_addr_2_save[0];
       config_json_w["K_1"] = hidc_addr_2_save[1];
-      config_json_w["K_0"] = hidc_addr_2_save[2];
+      config_json_w["K_2"] = hidc_addr_2_save[2];
 
       serializeJsonPretty(config_json_w, f2w);
       f2w.close();
@@ -26,9 +26,9 @@ class RW_HIDC {
       JsonDocument config_json_r;
       deserializeJson(config_json_r, f2r); 
 
-      *(hidc_addr_2_load + 2) = config_json_r["K_0"];
+      *(hidc_addr_2_load + 0) = config_json_r["K_0"];
       *(hidc_addr_2_load + 1) = config_json_r["K_1"];
-      *(hidc_addr_2_load + 0) = config_json_r["K_2"]; 
+      *(hidc_addr_2_load + 2) = config_json_r["K_2"]; 
       f2r.close();
     }
     
